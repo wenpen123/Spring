@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace 表示命名空间-->
+<mapper namespace="com.wenpeng.Mode.Account">
+    <!--根据账号id获取账户信息-->
+    <select id="findAccountById" parameterType="Integer" resultType="com.wenpeng.Mode.Account">
+select * from account where id = #{id}
+</select>
+    <!--根据客户名称模糊查询-->
+    <select id="findAccountByName" parameterType="String" resultType="com.wenpeng.Mode.Account">
+        <!--防止sql注入，不使用'%${value}%-->
+        <!--select * from account where username like '%${value}%'-->
+        <!-- 使用mysql的concat-->
+        select * from account where username like concat ('%',#{username},'%')
+    </select>
+    <!--添加账号信息-->
+    <insert id="addAccount" parameterType="com.wenpeng.Mode.Account">
+     insert into  account (username,balance) values (#{username},#{balance})
+ </insert>
+    <!--修改账号信息-->
+    <update id="updateAccount" parameterType="com.wenpeng.Mode.Account">
+         update account set username=#{username} , balance=#{balance} where id=#{id}
+     </update>
+    <!--删除账号信息-->
+    <delete id="deleteAccount" parameterType="Integer">
+        delete from account where id = #{id}
+    </delete>
+</mapper>
